@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAR Narrative Generator</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+}
+
+header {
+    background-color: #0a1f44;
+    color: white;
+    padding: 18px 30px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+h2 {
+    color: #0a1f44;
+    margin-top: 0;
+}
+
+textarea {
+    width: 100%;
+    height: 220px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    font-family: monospace;
+}
+
+button {
+    background-color: #0a1f44;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-top: 10px;
+    margin-right: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #163d7a;
+}
+
+.status {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.approved {
+    background: #d4edda;
+    color: #155724;
+}
+
+.flex {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+SAR Narrative Generator with Audit Trail
+</header>
+
+<div class="container">
+
+<!-- AML Alert Input -->
+<div class="card">
+    <h2>1️⃣ AML Alert Input</h2>
+    <textarea id="alertInput">
+Alert ID: AML_2026_11021
+Activity: 37 inbound transfers in 6 days
+Total Inbound: ₹35,12,000
+Outbound Transfer: ₹34,80,000 to UAE
+Account Age: 2 months
+Historical Avg Monthly Inflow: ₹70,000
+Triggered Rules:
+- High Velocity Transfers
+- Structuring Pattern
+- Rapid Outbound Wire
+    </textarea>
+    <button onclick="generateSAR()">Generate SAR Draft</button>
+</div>
+
+<div class="flex">
+
+<!-- SAR Draft Section -->
+<div class="card column">
+    <h2>2️⃣ Generated SAR Draft</h2>
+    <textarea id="sarOutput" placeholder="Generated SAR will appear here..."></textarea>
+    <button onclick="approveSAR()">Approve SAR</button>
+    <button onclick="editSAR()">Mark as Edited</button>
+    <div id="statusBox"></div>
+</div>
+
+<!-- Audit Trail Section -->
+<div class="card column">
+    <h2>3️⃣ Audit Trail</h2>
+    <div id="auditLog">
+        No logs yet.
+    </div>
+</div>
+
+</div>
+</div>
+
+<script>
+function generateSAR() {
+
+    const generatedText = `
+SUSPICIOUS ACTIVITY REPORT (SAR)
+================================================================
+
+PART I – SUBJECT INFORMATION
+----------------------------------------------------------------
+Name: [Redacted]
+Account Number: XXXX-XXXX-1121
+Account Type: Individual
+Account Open Date: January 2026
+Risk Rating: Medium
+
+PART II – SUSPICIOUS ACTIVITY DETAILS
+----------------------------------------------------------------
+Suspicious Activity Type:
+☑ Structuring
+☑ Rapid Movement of Funds
+☑ Potential Layering
+
+Activity Date Range:
+01 March 2026 – 07 March 2026
+
+Total Amount Involved:
+₹35,12,000
+
+PART III – NARRATIVE
+----------------------------------------------------------------
+Between 01 March 2026 and 07 March 2026, the subject account
+received 37 inbound electronic transfers totaling ₹35,12,000
+from unrelated domestic counterparties.
+
+The credit values were consistently between ₹90,000 and ₹1,00,000,
+which significantly deviates from the customer's historical
+monthly average inflow of ₹70,000.
+
+Within 24 hours of the final inbound transaction, the account
+initiated an international wire transfer of ₹34,80,000 to
+XYZ Trading LLC, a newly added beneficiary located in the UAE.
+
+The aggregation of near-threshold credits followed by rapid
+international movement of funds demonstrates characteristics
+consistent with structuring and potential layering typologies
+associated with money laundering risk.
+
+No prior international activity was observed on this account.
+
+PART IV – ACTION TAKEN
+----------------------------------------------------------------
+The activity has been escalated for enhanced due diligence review.
+This SAR is filed to document the suspicious transaction pattern
+for regulatory assessment.
+
+----------------------------------------------------------------
+Filed By: Compliance Monitoring Team
+Model Version: Llama3.1_v2.0
+Generated On: ${new Date().toLocaleString()}
+================================================================
+    `;
+
+    document.getElementById("sarOutput").value = generatedText;
+
+    document.getElementById("auditLog").innerHTML = `
+        <strong>Audit Entry Created:</strong><br>
+        - Alert ID Logged<br>
+        - Model Version: Llama3.1_v2.0<br>
+        - Retrieval Source: AML_Structuring_Guideline_v3<br>
+        - Prompt Version: SAR_Template_v1<br>
+        - Timestamp: ${new Date().toLocaleString()}
+    `;
+
+    document.getElementById("statusBox").innerHTML =
+        '<div class="status pending">Status: Draft Generated (Pending Analyst Review)</div>';
+}
+
+function approveSAR() {
+    document.getElementById("statusBox").innerHTML =
+        '<div class="status approved">Status: Approved & Locked</div>';
+
+    document.getElementById("auditLog").innerHTML += `
+        <br><br><strong>Approval Logged:</strong><br>
+        - Approved by Analyst<br>
+        - Timestamp: ${new Date().toLocaleString()}
+    `;
+}
+
+function editSAR() {
+    document.getElementById("statusBox").innerHTML =
+        '<div class="status pending">Status: Edited (Awaiting Re-Approval)</div>';
+
+    document.getElementById("auditLog").innerHTML += `
+        <br><br><strong>Edit Logged:</strong><br>
+        - Draft Modified by Analyst<br>
+        - Timestamp: ${new Date().toLocaleString()}
+    `;
+}
+</script>
+
+</body>
+</html>
